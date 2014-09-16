@@ -1,0 +1,26 @@
+{
+  "name": "yaml-to-json",
+  "version": "0.2.0",
+  "description": "Convert YAML into JSON. Supports YAML frontmatter, YAML multidocs and mixed text-and-yaml documents. Can process Textile, Markdown and AsciiDoc strings. Works on the command-line and in node.js.",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "yaml",
+    "json",
+    "multidoc",
+    "frontmatter",
+    "mixed"
+  ],
+  "author": "Stijn Debrouwere",
+  "license": "ISC",
+  "dependencies": {
+    "asciidoctor.js": "^1.5.0",
+    "js-yaml": "^3.2.2",
+    "markdown": "^0.5.0",
+    "textile-js": "^0.1.8",
+    "underscore": "^1.7.0",
+    "underscore.string": "^2.3.3"
+  }
+}

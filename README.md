@@ -2,18 +2,24 @@
 
 There's no dearth of YAML parsers and YAML to JSON converters. This command-line utility was built to handle YAML files that contain multiple documents, data and text mixed together. It's great for working with the frontmatter-plus-content format that static site generators almost universally depend on.
 
+Install with `npm install yaml-to-json -g`. Basic usage is simply `yaml2json <file>`. For an overview of all available command-line flags, use `yaml2json --help` or read on!
+
 ### Text detection
 
 A regular YAML parser will try to parse almost everything it humanly can into objects and arrays. For example, a text document that starts with "That is to say: an example." will be interpreted as a `That is to say` key with `an example.` as its value.
 
-One way to solve this is to use the `--document` flag to tell `yaml2json` that you're dealing with a document that starts with YAML front matter (a.k.a. your document's metadata), followed by one or more text documents (a.k.a. your body copy). Only the first document in a multidoc will be interpreted as YAML, all further documents will be strings.
-
-Another way to solve this is to use the `--fussy` flag to ask the parser to be more fussy, and only interpret something as an object or a string, rather than plain text, if it really unambigously looks like it: 
+`yaml2json` solves this through fussy parsing: add the `--fussy` flag to ask the parser to only interpret something as an object or a string, rather than plain text, if it really unambigously looks like it: 
 
 * object: `author: George Brassens`
 * string: `Here's an artist you might like: George Brassens`
+* string: `Witty: that's how I'd describe him.`
 * array: `- don't forget to bring milk`
+* string: ` - here's an anecdote`
 * string: `-- anyway, that's the end of it`
+
+If fussy parsing is activated, object keys can only be single-word lowercase alphanumeric characters or the underscore (`[a-z0-9_]`) and lists have to start with `- `, without any leading indentation.
+
+Fussy parsing is recommended when working with text-heavy YAML multi-documents. It guarantees your content won't accidentally get interpreted as YAML, but any frontmatter will be parsed as data just fine.
 
 ### Markup languages
 
@@ -43,7 +49,7 @@ A multidoc is an array of documents, and that's what `yaml2json` will print out:
 ]
 ```
 
-However, for simple documents that consist of YAML frontmatter plus content, a prettier output format is supported, which merges metadata (such as title and author) and content: 
+However, for simple documents that consist of just YAML frontmatter plus content, a prettier output format is supported, which merges metadata (such as title and author) and content: 
 
 ```json
 {
@@ -65,7 +71,7 @@ In most cases, you'll want to combine the `--pretty` flag with `--convert` (to p
     yaml2json.loadFirst
     yaml2json.loadAll
 
-### Some thoughts about mixed-format YAML files.
+### Some thoughts about mixed-format YAML
 
 The frontmatter-plus-content format is an elegant way to structure blog posts and other simple documents. But it's not the only way. The great thing about mixed-format YAML files is that you can mix up however many text and metadata blocks as you'd like.
 

@@ -7,6 +7,7 @@ build:
 test:
 	./bin/yaml2json examples/musicman.md \
 		--fussy \
+		--convert-all \
 		--pretty
 
 #test: build

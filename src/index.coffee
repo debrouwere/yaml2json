@@ -5,6 +5,10 @@ parsers =
     textile: require 'textile-js'
     markdown: require 'markdown'
     asciidoc: require 'asciidoctor.js'
+converters =
+    textile: parsers.textile.parse
+    markdown: parsers.markdown.markdown.toHTML
+    asciidoc: parsers.asciidoc().Asciidoctor().$convert
 
 
 MULTIDOC_TOKEN = '---\n'
@@ -52,26 +56,40 @@ parsers.yaml.safeLoadMixed = (raw) ->
     else
         parsers.yaml.safeLoad raw
 
+convertFormat = (doc, options) ->
+    html = converters[options.format] doc
+
+    if options.keepRaw
+        wrapper = {html}
+        wrapper[options.format] = doc   
+    else
+        html
+
+convertIfString = (doc, options) ->
+    if typeof doc is 'string'
+        convertFormat doc, options
+    else
+        doc
 
 module.exports = (raw, options={}) ->
     if options.fussy
         docs = parsers.yaml.safeLoadMixed raw
     else
-        docs = parsers.yaml.safeLoadAll raw
+        docs = parsers.yaml.safeLoadAll raw     
 
-    if options.convertAll
-        throw new Error "Not implemented yet."
-    else if options.convert
-        docs = docs.map (doc) ->
+    if options.convertAll or options.convert
+        convert = _.partial convertIfString, _, options
+        docs = _.map docs, (doc) ->
             if typeof doc is 'string'
-                # TODO: make it so that `parsers` actually
-                # contains the converting functions (or 
-                # use a separate collection variable), not
-                # the modules, otherwise this won't work
-                html = parsers[options.format] doc
-                if options.keepRaw
-                    wrapper = {html}
-                    wrapper[options.format] = doc
+                convert doc
+            else if options.convertAll
+                # TODO: also go through arrays
+                # TODO: remove wrapping <p> tags, 
+                # as these are usually not wanted
+                # when converting small amounts
+                # of text
+                _.object _.map doc, (value, key) ->
+                    [key, convert value]
             else
                 doc
 

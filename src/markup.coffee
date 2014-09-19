@@ -37,6 +37,7 @@ exports.string = convertString = (string, options) ->
     if options.keepRaw
         wrapper = {html}
         wrapper[options.format] = string   
+        wrapper
     else
         html
 

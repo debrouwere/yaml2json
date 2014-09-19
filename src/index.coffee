@@ -7,6 +7,15 @@ yaml = require './yaml'
 markup = require './markup'
 
 module.exports = (raw, options={}) ->
+    if options.human
+        _.extend options, 
+            fussy: yes
+            convert: yes
+            keepRaw: yes
+
+    if options.convert and not options.format
+        throw new Error "Cannot convert markup unless a format is provided."
+
     if options.fussy
         docs = yaml.safeLoadMixed raw
     else
@@ -16,8 +25,12 @@ module.exports = (raw, options={}) ->
         conversionOptions = 
             format: options.format
             recursive: options.convertAll
+            keepRaw: options.keepRaw
         convert = _.partial markup.object, _, conversionOptions
         docs = _.map docs, convert
+
+    if options.human
+        docs = _.extend docs[0], docs[1], more: docs[2..]
 
     if yaml.isMultidoc raw
         docs

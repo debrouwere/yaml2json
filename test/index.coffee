@@ -53,7 +53,20 @@ describe 'yaml2json: module', ->
             'The Music Man <em>(2003 film)</em>'
 
     it 'can transform objects that represent simple documents 
-    into a more developer-friendly format'
+    into a more developer-friendly format', ->
+        multidoc = fs.readFileSync 'examples/musicman.md', encoding: 'utf8'
+        object = yaml2json multidoc, 
+            format: 'markdown'
+            human: yes
+        object.should.have.properties [
+            'block'
+            'title'
+            'year'
+            'markdown'
+            'html'
+            'more'
+            ]
+        object.more.length.should.eql 3
 
 describe 'yaml2json: command-line interface', ->
     it 'works on the command-line', (done) ->

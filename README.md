@@ -72,23 +72,25 @@ Use the `--prose` flag to change output to this cleaner format. Note that this f
 
 ### Use from node.js
 
-    /* high-level interface */
-    var yaml2json = require('yaml-to-json');
-    yaml2json(str, options);
+```javascript
+/* high-level interface */
+var yaml2json = require('yaml-to-json');
+yaml2json(str, options);
 
-    /* lower-level interface */
-    var yaml = require('yaml-to-json').yaml;
-    // load multiple documents, always returns an array
-    yaml.safeLoadAll(str);
-    // load one or more documents, returning 
-    // an array or an object depending on whether
-    // a multidoc is detected
-    yaml.safeLoadAny(str);
-    // fussy parsing (prefers to parse documents 
-    // as strings rather than as YAML)
-    yaml.safeLoadMixed(str);
-    // detect if a string of YAML contains multiple documents
-    yaml.isMultidoc(str);
+/* lower-level interface */
+var yaml = require('yaml-to-json').yaml;
+// load multiple documents, always returns an array
+yaml.safeLoadAll(str);
+// load one or more documents, returning 
+// an array or an object depending on whether
+// a multidoc is detected
+yaml.safeLoadAny(str);
+// fussy parsing (prefers to parse documents 
+// as strings rather than as YAML)
+yaml.safeLoadMixed(str);
+// detect if a string of YAML contains multiple documents
+yaml.isMultidoc(str);
+```
 
 `yaml2json` is actually a bit of a misnomer in the context of node.js: the output of the function will be JavaScript objects, not a serialized string of JSON.
 

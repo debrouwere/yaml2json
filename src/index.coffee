@@ -14,7 +14,12 @@ module.exports = (raw, options={}) ->
             keepRaw: yes
 
     if options.convert and not options.format
-        throw new Error "Cannot convert markup unless a format is provided."
+        throw new Error \
+        "Cannot convert markup unless a format is provided."
+
+    if options.human and not yaml.isMultidoc raw
+        throw new Error \
+        "Can only humanize YAML files that contain both frontmatter and content."
 
     if options.fussy
         docs = yaml.safeLoadMixed raw

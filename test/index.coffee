@@ -58,15 +58,22 @@ describe 'yaml2json: module', ->
         object = yaml2json multidoc, 
             format: 'markdown'
             human: yes
-        object.should.have.properties [
+        object.should.have.properties \
             'block'
             'title'
             'year'
             'markdown'
             'html'
             'more'
-            ]
         object.more.length.should.eql 3
+
+    it 'distinguishes multidocs from single documents', ->
+        doc = fs.readFileSync 'examples/data.yml', encoding: 'utf8'        
+        object = yaml2json doc
+        object.should.be.an.instanceof Object
+        object.should.have.properties \
+            'description'
+            'categories'
 
 describe 'yaml2json: command-line interface', ->
     it 'works on the command-line', (done) ->

@@ -15,7 +15,10 @@ exports.safeLoadAll = (raw) ->
     data = []
     push = _.bind data.push, data
     exports.safeIterate raw, push
+    data
 
+exports.safeLoadAny = (raw) ->
+    data = exports.safeLoadAll raw
     if isMultidoc raw
         data
     else

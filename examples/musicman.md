@@ -3,7 +3,7 @@ block: metadata
 title: The Music Man
 year: 1962
 ---
-In July 1912, a traveling salesman, "Professor" Harold Hill (Robert Preston), arrives in the fictional location of **River City, Iowa**, intrigued by the challenge of swindling the famously stubborn natives of Iowa.
+Plot: In July 1912, a traveling salesman, "Professor" Harold Hill (Robert Preston), arrives in the fictional location of **River City, Iowa**, intrigued by the challenge of swindling the famously stubborn natives of Iowa.
 ---
 block: cast
 actors:

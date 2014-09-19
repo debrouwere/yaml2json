@@ -49,4 +49,4 @@ exports.safeLoadMixed = (raw) ->
                         throw err
         data
     else
-        exports.safeLoad raw
+        exports.safeLoadAll raw

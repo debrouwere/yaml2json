@@ -1,6 +1,5 @@
 _ = require 'underscore'
 _.str = require 'underscore.string'
-fs = path: require 'path'
 parsers =
     textile: require 'textile-js'
     markdown: require 'markdown'
@@ -12,6 +11,7 @@ asciidocOptions = Opal.hash2 ['doctype', 'attributes'],
     attributes: ['showtitle']
 
 converters =
+    noop: (string) -> string
     textile: parsers.textile.parse
     markdown: parsers.markdown.markdown.toHTML
     asciidoc: (string) -> parsers.asciidoc().Asciidoctor().$convert string, asciidocOptions
@@ -21,15 +21,6 @@ bare = (string) ->
         string
     else
         string.replace /^<p>(.*)<\/p>$/, '$1'
-
-exports.detect = (filename) ->
-    name = filename.replace /\.ya?ml/g, ''
-    extension = fs.path.extname name
-    switch extension
-        when '.md', '.markdown'   then return 'markdown'
-        when '.textile'           then return 'textile'
-        when '.asciidoc', '.adoc' then return 'asciidoc'
-        else return undefined
 
 exports.string = convertString = (string, options) ->
     html = converters[options.format] string

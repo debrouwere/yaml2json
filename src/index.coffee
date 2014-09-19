@@ -7,17 +7,13 @@ yaml = require './yaml'
 markup = require './markup'
 
 module.exports = (raw, options={}) ->
-    if options.human
+    if options.prose
         _.extend options, 
             fussy: yes
             convert: yes
             keepRaw: yes
 
-    if options.convert and not options.format
-        throw new Error \
-        "Cannot convert markup unless a format is provided."
-
-    if options.human and not yaml.isMultidoc raw
+    if options.prose and not yaml.isMultidoc raw
         throw new Error \
         "Can only humanize YAML files that contain both frontmatter and content."
 
@@ -28,13 +24,13 @@ module.exports = (raw, options={}) ->
 
     if options.convert or options.convertAll
         conversionOptions = 
-            format: options.format
+            format: options.format or 'noop'
             recursive: options.convertAll
             keepRaw: options.keepRaw
         convert = _.partial markup.object, _, conversionOptions
         docs = _.map docs, convert
 
-    if options.human
+    if options.prose
         docs = _.extend docs[0], docs[1], more: docs[2..]
 
     if yaml.isMultidoc raw

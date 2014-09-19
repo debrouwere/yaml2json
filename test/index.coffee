@@ -3,7 +3,7 @@ fs = require 'fs'
 should = require 'should'
 yaml2json = require '../src'
 
-describe 'yaml2json: module', ->
+describe 'programmatic interface', ->
     it 'can convert yaml into json', ->
         multidoc = fs.readFileSync 'examples/musicman.md', encoding: 'utf8'
         object = yaml2json multidoc
@@ -52,12 +52,12 @@ describe 'yaml2json: module', ->
         object[4].alternatives[0].should.eql \
             'The Music Man <em>(2003 film)</em>'
 
-    it 'can transform objects that represent simple documents 
+    it 'can transform objects that represent simple prose documents 
     into a more developer-friendly format', ->
         multidoc = fs.readFileSync 'examples/musicman.md', encoding: 'utf8'
         object = yaml2json multidoc, 
             format: 'markdown'
-            human: yes
+            prose: yes
         object.should.have.properties \
             'block'
             'title'
@@ -75,7 +75,11 @@ describe 'yaml2json: module', ->
             'description'
             'categories'
 
-describe 'yaml2json: command-line interface', ->
+describe 'command-line interface', ->
+    it 'can detect the markup format from the file extension', ->
+        format = (require '../src/loader').detectFormat 'directory/file.adoc'
+        format.should.eql 'asciidoc'
+
     it 'works on the command-line', (done) ->
         path = 'examples/musicman.md'
         command = "./bin/yaml2json #{path} \
@@ -87,6 +91,20 @@ describe 'yaml2json: command-line interface', ->
             parsed.length.should.eql 5
             done err
 
-    it 'can detect the markup format from the file extension', ->
-        format = (require '../src/markup').detect 'directory/file.adoc'
-        format.should.eql 'asciidoc'
+    it 'can process an entire directory at once', (done) ->
+        input = 'examples'
+        output = 'test/build'
+        examples = [
+            'antananarivo'
+            'data'
+            'musicman'
+            'tegucigalpa'
+            ]
+        command = "./bin/yaml2json #{input} \
+            --fussy \
+            --convert \
+            --output #{output}"
+        exec command, (err, stdout, stderr) ->
+            for example in examples
+                (fs.existsSync "#{output}/#{example}.json").should.be.ok
+            done err

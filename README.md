@@ -34,6 +34,8 @@ If you'd like to keep the raw markup in addition to the HTML output from the par
 * `html`
 * `markdown`, `asciidoc` or `textile` keys depending on your markup language
 
+Please note that Asciidoc conversion can be a bit flaky. The [Asciidoctor.js](http://asciidoctor.org/docs/install-and-use-asciidoctorjs/) module for converting Asciidoc in JavaScript applications is still rather immature.
+
 ### Pretty output
 
 A multidoc is an array of documents, and that's what `yaml2json` will print out:

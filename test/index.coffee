@@ -1,8 +1,3 @@
-###
-These tests are not comprehensive, but they do serve as a sanity check
-by proving changes haven't accidentally broken *everything*.
-###
-
 fs = require 'fs'
 {exec} = require 'child_process'
 should = require 'should'
@@ -25,10 +20,37 @@ describe 'yaml2json: module', ->
         object.length.should.eql 5
         object[1].should.be.an.instanceOf String
     
-    it 'can convert markdown documents'
-    it 'can convert asciidoc documents'
-    it 'can convert textile documents'
-    it 'can convert strings inside of objects'
+    it 'can convert markdown documents', ->
+        multidoc = fs.readFileSync 'examples/musicman.md', encoding: 'utf8'
+        object = yaml2json multidoc, 
+            format: 'markdown'
+            convert: yes
+            fussy: yes
+        object[1].should.match /<strong>River City, Iowa<\/strong>/
+
+    it 'can convert asciidoc documents', ->
+        multidoc = fs.readFileSync 'examples/tegucigalpa.adoc', encoding: 'utf8'
+        object = yaml2json multidoc, 
+            format: 'asciidoc'
+            convert: yes
+            fussy: yes
+        object[1].should.match /Central America<\/a>/
+
+    it 'can convert textile documents', ->
+        multidoc = fs.readFileSync 'examples/antananarivo.textile', encoding: 'utf8'
+        object = yaml2json multidoc, 
+            format: 'textile'
+            convert: yes
+            fussy: yes
+        object[1].should.match /<em>Tananarive<\/em>/
+
+    it 'can convert strings inside of objects', ->
+        multidoc = fs.readFileSync 'examples/musicman.md', encoding: 'utf8'
+        object = yaml2json multidoc, 
+            format: 'markdown'
+            convertAll: yes
+        object[4].alternatives[0].should.eql \
+            'The Music Man <em>(2003 film)</em>'
 
     it 'can transform objects that represent simple documents 
     into a more developer-friendly format'
@@ -43,10 +65,8 @@ describe 'yaml2json: command-line interface', ->
             stdout.should.be.an.instanceOf String
             parsed = JSON.parse stdout
             parsed.length.should.eql 5
-            parsed[0].title.should.eql \
-                'The Music Man'
-            parsed[4].alternatives[0].should.eql \
-                'The Music Man <em>(2003 film)</em>'
             done err
 
-    it 'can detect the markup format from the file extension'
+    it 'can detect the markup format from the file extension', ->
+        format = (require '../src/markup').detect 'directory/file.adoc'
+        format.should.eql 'asciidoc'

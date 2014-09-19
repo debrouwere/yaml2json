@@ -3,6 +3,7 @@ fs = require 'fs'
 fs.path = require 'path'
 fs.findit = require 'findit'
 program = require 'commander'
+markup = require './markup'
 parser = require './'
 
 program
@@ -35,16 +36,7 @@ else
 
 format = program.convertAll or program.convert
 format = if typeof format is 'string' then format else false
-
-unless format
-    name = input.replace /\.ya?ml/g, ''
-    extension = format or fs.path.extname name
-    switch extension
-        when '.md', '.markdown'   then format = 'markdown'
-        when '.textile'           then format = 'markdown'
-        when '.asciidoc', '.adoc' then format = 'asciidoc'
-
-program.format = format
+program.format = format or markup.detect input
 
 isNewer = (input, output) ->
     try

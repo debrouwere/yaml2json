@@ -62,9 +62,9 @@ However, for simple documents that consist of just YAML frontmatter plus content
 }
 ```
 
-Use the `--pretty` flag to change output to this cleaner format.
+Use the `--human` flag to change output to this cleaner format.
 
-In most cases, you'll want to combine the `--pretty` flag with `--convert` (to parse any markup) and `--fussy` (so that your content isn't accidentally parsed as YAML.)
+In most cases, you'll want to combine the `--human` flag with `--convert` (to parse any markup) and `--fussy` (so that your content isn't accidentally parsed as YAML.)
 
 ### Use from node.js
 

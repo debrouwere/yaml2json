@@ -1,5 +1,7 @@
 # A YAML parser for text documents
 
+[![Build Status](https://travis-ci.org/stdbrouw/yaml2json.svg)](https://travis-ci.org/stdbrouw/yaml2json)
+
 There's no dearth of YAML parsers and YAML to JSON converters. This command-line utility was built to handle YAML files that contain multiple documents, data and text mixed together. It's great for working with the frontmatter-plus-content format that static site generators almost universally depend on.
 
 Install with `npm install yaml-to-json -g`. Basic usage is simply `yaml2json <file>`. For an overview of all available command-line flags, use `yaml2json --help` or read on!

@@ -70,10 +70,29 @@ In most cases, you'll want to combine the `--human` flag with `--convert` (to pa
 
 ### Use from node.js
 
+    /* high-level interface */
     var yaml2json = require('yaml-to-json');
-    yaml2json.load
-    yaml2json.loadFirst
-    yaml2json.loadAll
+    yaml2json(str, options);
+
+    /* lower-level interface */
+    var yaml = require('yaml-to-json').yaml;
+    // load multiple documents, always returns an array
+    yaml.safeLoadAll(str);
+    // load one or more documents, returning 
+    // an array or an object depending on whether
+    // a multidoc is detected
+    yaml.safeLoadAny(str);
+    // fussy parsing (prefers to parse documents 
+    // as strings rather than as YAML)
+    yaml.safeLoadMixed(str);
+    // detect if a string of YAML contains multiple documents
+    yaml.isMultidoc(str);
+
+`yaml2json` is actually a bit of a misnomer in the context of node.js: the output of the function will be JavaScript objects, not a serialized string of JSON.
+
+The options to the `yaml2json` function are camelCased versions of the command-line otions: `convertAll`, `human`, `keepRaw` et cetera.
+
+Take a look at the test suite for more example code.
 
 ### Some thoughts about mixed-format YAML
 

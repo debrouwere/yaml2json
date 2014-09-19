@@ -41,3 +41,5 @@ module.exports = (raw, options={}) ->
         docs
     else
         docs[0]
+
+module.exports.yaml = yaml

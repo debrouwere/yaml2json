@@ -40,7 +40,7 @@ If you'd like to keep the raw markup in addition to the HTML output from the par
 
 Please note that Asciidoc conversion can be a bit flaky. The [Asciidoctor.js](http://asciidoctor.org/docs/install-and-use-asciidoctorjs/) module for converting Asciidoc in JavaScript applications is still rather immature.
 
-### Pretty output
+### Pretty output for prose documents
 
 A multidoc is an array of documents, and that's what `yaml2json` will print out:
 
@@ -61,12 +61,14 @@ However, for simple documents that consist of just YAML frontmatter plus content
 
 ```json
 {
-    "raw": "...", 
+    "html": "...", 
     "markdown": "...", 
     "title": "...", 
     "author": "..."
 }
 ```
+
+Documents beyond the frontmatter and content, if any, will be added to an array accessible under `more`.
 
 Use the `--prose` flag to change output to this cleaner format. Note that this flag automatically enables `--convert`, `--fussy` and `--keep-raw` as well. 
 

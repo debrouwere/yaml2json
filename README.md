@@ -1,6 +1,6 @@
 # A YAML parser for text documents
 
-[![Build Status](https://travis-ci.org/stdbrouw/yaml2json.svg)](https://travis-ci.org/stdbrouw/yaml2json)
+[![Build Status](https://travis-ci.org/debrouwere/yaml2json.svg)](https://travis-ci.org/debrouwere/yaml2json)
 
 There's no dearth of YAML parsers and YAML to JSON converters. This command-line utility was built to handle YAML files that contain multiple documents, data and text mixed together. It's great for working with the frontmatter-plus-content format that static site generators almost universally depend on.
 
